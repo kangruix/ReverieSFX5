@@ -16,12 +16,20 @@ add_library(reverie_core STATIC
 
 # Dependencies
 target_include_directories(reverie_core
+    PUBLIC ${CMAKE_SOURCE_DIR}/include/
 	PUBLIC ${CMAKE_SOURCE_DIR}/ext/nanobind/include)
 
 # OpenMP support
 find_package(OpenMP COMPONENTS CXX)
 if (OpenMP_CXX_FOUND)
 	target_link_libraries(reverie_core PUBLIC OpenMP::OpenMP_CXX)
+endif()
+
+# CUDA support
+if (CMAKE_CUDA_COMPILER)
+	target_include_directories(reverie_core PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+	target_compile_definitions(reverie_core PUBLIC REV_USE_CUDA)
+	target_compile_options(reverie_core PUBLIC $<$<COMPILE_LANGUAGE:CUDA>:--use_fast_math>)
 endif()
 
 # Python bindings
