@@ -15,7 +15,7 @@ add_library(reverie_fdtd STATIC
     ${REVERIE_FDTD_C} ${REVERIE_FDTD_H})
 
 # Dependencies
-target_link_libraries(reverie_fdtd PRIVATE reverie_core)
+target_link_libraries(reverie_fdtd PUBLIC reverie_core)
 
 # Python bindings
 file(GLOB REVERIE_FDTD_PY

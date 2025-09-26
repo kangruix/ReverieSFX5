@@ -6,7 +6,8 @@
 
 namespace reverie {
 
-/// Macro for importing common 2D array operations
+// 2D types
+
 #define REV_IMPORT_ARRAY2(T, array2) \
     T x, y; \
     REV_HOST_DEVICE constexpr array2(T c = 0) : x(c), y(c) {} \
@@ -20,9 +21,10 @@ namespace reverie {
     REV_HOST_DEVICE array2 max(const array2& o) const { return { x > o.x ? x : o.x, y > o.y ? y : o.y }; } \
     \
     template <typename U> REV_HOST_DEVICE explicit constexpr array2(const array2<U>& o) \
-        : x(static_cast<T>(o.x)), y(static_cast<T>(o.y)) {}
+        : x(static_cast<T>(o.x)), y(static_cast<T>(o.y)) {} \
+    \
+    std::string to_string() const { return "[" + std::to_string(x) + ", " + std::to_string(y) + "]"; }
 
-/// \private 2D vector
 template <typename T> struct vec2 {
     REV_IMPORT_ARRAY2(T, vec2)
 
@@ -36,7 +38,6 @@ template <typename T> struct vec2 {
 };
 template<typename T> REV_HOST_DEVICE vec2<T> operator*(T s, const vec2<T>& v) { return { s * v.x, s * v.y }; }
 
-/// \private 2D point
 template <typename T> struct point2 {
     REV_IMPORT_ARRAY2(T, point2)
 
@@ -46,8 +47,8 @@ template <typename T> struct point2 {
 };
 template<typename T> REV_HOST_DEVICE point2<T> operator*(T s, const point2<T>& v) { return { s * v.x, s * v.y }; }
 
+// 3D types
 
-/// \private Macro for importing common 3D array operations
 #define REV_IMPORT_ARRAY3(T, array3) \
     T x, y, z; \
     REV_HOST_DEVICE constexpr array3(T c = 0) : x(c), y(c), z(c) {} \
@@ -61,9 +62,10 @@ template<typename T> REV_HOST_DEVICE point2<T> operator*(T s, const point2<T>& v
     REV_HOST_DEVICE array3 max(const array3& o) const { return { x > o.x ? x : o.x, y > o.y ? y : o.y, z > o.z ? z : o.z }; } \
     \
     template <typename U> REV_HOST_DEVICE explicit constexpr array3(const array3<U>& o) \
-        : x(static_cast<T>(o.x)), y(static_cast<T>(o.y)), z(static_cast<T>(o.z)) {}
+        : x(static_cast<T>(o.x)), y(static_cast<T>(o.y)), z(static_cast<T>(o.z)) {} \
+    \
+    std::string to_string() const { return "[" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + "]"; }
 
-/// \private 3D vector
 template <typename T> struct vec3 {
     REV_IMPORT_ARRAY3(T, vec3)
 
@@ -78,7 +80,6 @@ template <typename T> struct vec3 {
 };
 template <typename T> REV_HOST_DEVICE vec3<T> operator*(T s, const vec3<T>& v) { return { s * v.x, s * v.y, s * v.z }; }
 
-/// \private 3D point
 template <typename T>
 struct point3 {
     REV_IMPORT_ARRAY3(T, point3)
@@ -89,21 +90,8 @@ struct point3 {
 };
 template <typename T> REV_HOST_DEVICE point3<T> operator*(T s, const point3<T>& v) { return { s * v.x, s * v.y, s * v.z }; }
 
-/// String conversion
-template <typename T> std::string string(const vec2<T>& v) {
-    return "[" + std::to_string(v.x) + ", " + std::to_string(v.y) + "]";
-}
-template <typename T> std::string string(const vec3<T>& v) {
-    return "[" + std::to_string(v.x) + ", " + std::to_string(v.y) + ", " + std::to_string(v.z) + "]";
-}
-template <typename T> std::string string(const point2<T>& p) {
-    return "[" + std::to_string(p.x) + ", " + std::to_string(p.y) + "]";
-}
-template <typename T> std::string string(const point3<T>& p) {
-    return "[" + std::to_string(p.x) + ", " + std::to_string(p.y) + ", " + std::to_string(p.z) + "]";
-}
-
 /// Aliases for common types
+
 using vec2i = vec2<int>;
 using vec2f = vec2<float>;
 using vec2d = vec2<double>;
