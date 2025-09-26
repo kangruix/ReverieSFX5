@@ -1,0 +1,17 @@
+[build-system]
+requires = ["scikit-build-core >=0.4.3", "nanobind >=1.3.2"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "reverie"
+version = "0.0.0"
+description = "Reverie Sound Rendering Engine"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [ { name = "Kangrui Xue", email = "kangruix@stanford.edu" }, ]
+classifiers = [ "License :: MIT", ]
+
+[tool.scikit-build]
+minimum-version = "0.4"
+build-dir = "build/{wheel_tag}"
+wheel.py-api = "cp312"
