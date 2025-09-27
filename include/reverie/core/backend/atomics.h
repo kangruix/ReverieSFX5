@@ -3,13 +3,6 @@
 #include <omp.h>
 #endif
 
-/**
- * Atomic operations for both CPU (OpenMP) and CUDA
- *
- * Along with the other backend components, this allows for writing
- * device-agnostic code that compiles to both valid C++ and CUDA kernels.
- */
-
 namespace reverie {
 
 #ifdef __CUDA_ARCH__

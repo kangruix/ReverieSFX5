@@ -10,7 +10,7 @@
  * Low-level memory management API
  * 
  * The behaviors of revMalloc, revMemcpy, revMemset, and revFree depend
- * on the translation unit they are invoked from.
+ * on the translation unit they are invoked from:
  * 
  * If invoked from a .cu file (i.e., compiled with nvcc), these functions
  * manage memory on the GPU using CUDA APIs.

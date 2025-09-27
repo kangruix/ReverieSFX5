@@ -1,10 +1,45 @@
-#pragma once
 #include "reverie/core/geometry/mesh.h"
 #include <fstream>
 #include <sstream>
 
 namespace reverie {
 namespace geometry {
+
+bool Mesh::read(const std::filesystem::path& objfile) {
+	std::ifstream fin(objfile);
+	if (!fin) throw std::runtime_error("Mesh: failed to open file " + objfile.string());
+
+	std::vector<point3f> vertices;
+	std::vector<vec3i> faces;
+
+	std::string line, prefix;
+	while (std::getline(fin, line)) {
+		std::istringstream sstream(line);
+		sstream >> prefix;
+
+		if (prefix == "v") {
+			point3f v;
+			sstream >> v.x >> v.y >> v.z;
+			vertices.push_back(v);
+		} 
+		else if (prefix == "f") {
+			std::string f1, f2, f3;
+			sstream >> f1 >> f2 >> f3;
+			
+			auto split = [](const std::string& f) -> int {
+				return std::stoi(f.substr(0, f.find('/')));
+			};
+			faces.push_back({ split(f1) - 1, split(f2) - 1, split(f3) - 1 });
+		}
+	}
+	if (vertices.size() == 0 || faces.size() == 0) return false;
+
+	m_vertices = Buffer<point3f>(vertices, m_device);
+	m_faces = Buffer<vec3i>(faces, m_device);
+	m_bbox = compute_bbox(m_vertices);
+
+	return true;
+}
 
 void Mesh::write(const std::filesystem::path& objfile) const {
 	std::ofstream fout(objfile);

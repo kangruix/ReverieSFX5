@@ -9,9 +9,12 @@ namespace geometry {
 class Mesh : public ReverieBase {
 public:
 	/// Default constructor: initialize empty Mesh
-	Mesh() = default;
+	Mesh(const Device& device = Device()) : ReverieBase(device) {}
 
-	/// Writes this Mesh to an .obj file
+	/// Read Mesh from .obj file
+	bool read(const std::filesystem::path& objfile);
+
+	/// Write Mesh to .obj file
 	void write(const std::filesystem::path& objfile) const;
 
 	const point3f* vertices() const { return m_vertices.data(); }
@@ -29,6 +32,8 @@ private:
 	Buffer<vec3i> m_faces;
 
 	BBox3f m_bbox;
+
+	static constexpr int MAX_FACES = std::numeric_limits<int>::max();
 };
 
 } // namespace geometry

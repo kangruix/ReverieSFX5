@@ -8,6 +8,7 @@ namespace reverie {
 #define REV_HOST_DEVICE
 #endif
 
+/// \private
 #ifndef __CUDACC__
 struct dim3 {
     unsigned int x, y, z;

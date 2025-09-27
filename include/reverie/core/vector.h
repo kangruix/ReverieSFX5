@@ -25,6 +25,7 @@ namespace reverie {
     \
     std::string to_string() const { return "[" + std::to_string(x) + ", " + std::to_string(y) + "]"; }
 
+/// \private
 template <typename T> struct vec2 {
     REV_IMPORT_ARRAY2(T, vec2)
 
@@ -38,6 +39,7 @@ template <typename T> struct vec2 {
 };
 template<typename T> REV_HOST_DEVICE vec2<T> operator*(T s, const vec2<T>& v) { return { s * v.x, s * v.y }; }
 
+/// \private
 template <typename T> struct point2 {
     REV_IMPORT_ARRAY2(T, point2)
 
@@ -66,6 +68,7 @@ template<typename T> REV_HOST_DEVICE point2<T> operator*(T s, const point2<T>& v
     \
     std::string to_string() const { return "[" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + "]"; }
 
+/// \private
 template <typename T> struct vec3 {
     REV_IMPORT_ARRAY3(T, vec3)
 
@@ -80,6 +83,7 @@ template <typename T> struct vec3 {
 };
 template <typename T> REV_HOST_DEVICE vec3<T> operator*(T s, const vec3<T>& v) { return { s * v.x, s * v.y, s * v.z }; }
 
+/// \private
 template <typename T>
 struct point3 {
     REV_IMPORT_ARRAY3(T, point3)

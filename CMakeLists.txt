@@ -5,7 +5,14 @@ project(Reverie LANGUAGES CXX)
 # Global build options
 # -----------------------------------------------------------------------------
 
+option(BUILD_PYTHON "Build Python bindings" ON)
+option(BUILD_GUI    "Build GUI module" ON)
 
+option(BUILD_RIGID  "Build Rigid module" OFF)
+option(BUILD_FLUID  "Build Fluid module" OFF)
+option(BUILD_FDTD   "Build FDTD module" ON)
+
+option(FORCE_CPU  "Force CPU build (even if CUDA available)" OFF)
 
 # -----------------------------------------------------------------------------
 # Dependencies
@@ -43,8 +50,7 @@ message(STATUS "Python development found: ${Python_Development.Module_FOUND}")
 # Build module libraries
 # -----------------------------------------------------------------------------
 
-add_subdirectory(src/core)
-add_subdirectory(src/fdtd)
+add_subdirectory(src)
 
 # -----------------------------------------------------------------------------
 # Build main executable

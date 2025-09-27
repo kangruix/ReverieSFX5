@@ -10,23 +10,31 @@ file(GLOB REVERIE_FDTD_H
 file(GLOB REVERIE_FDTD_C
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
+# CUDA files
+if (CMAKE_CUDA_COMPILER)
+	file (GLOB REVERIE_FDTD_CU
+		${CMAKE_CURRENT_SOURCE_DIR}/*.cu)
+	list(APPEND REVERIE_FDTD_C ${REVERIE_FDTD_CU})
+endif()
+
 # Create library
 add_library(reverie_fdtd STATIC 
-    ${REVERIE_FDTD_C} ${REVERIE_FDTD_H})
+	${REVERIE_FDTD_C} ${REVERIE_FDTD_H})
 
 # Dependencies
-target_link_libraries(reverie_fdtd PUBLIC reverie_core)
+target_link_libraries(reverie_fdtd 
+	PUBLIC reverie_core)
 
 # Python bindings
-file(GLOB REVERIE_FDTD_PY
-    ${CMAKE_CURRENT_SOURCE_DIR}/python/*.cpp)
+file(GLOB REVERIE_FDTD_PY 
+	${CMAKE_CURRENT_SOURCE_DIR}/python/*.cpp)
 
-nanobind_add_module(pyreverie_fdtd STABLE_ABI ${REVERIE_FDTD_PY})
-set_target_properties(pyreverie_fdtd PROPERTIES OUTPUT_NAME "fdtd")
-target_link_libraries(pyreverie_fdtd PRIVATE reverie_fdtd)
+nanobind_add_module(revpy_fdtd STABLE_ABI ${REVERIE_FDTD_PY})
+set_target_properties(revpy_fdtd PROPERTIES OUTPUT_NAME "fdtd")
+target_link_libraries(revpy_fdtd PRIVATE reverie_fdtd)
 
 # Install directive for scikit-build-core
-install(TARGETS pyreverie_fdtd LIBRARY DESTINATION reverie/fdtd)
+install(TARGETS revpy_fdtd LIBRARY DESTINATION reverie/fdtd)
 
 # Organize files in Visual Studio
 source_group(TREE ${CMAKE_SOURCE_DIR}/include/reverie/fdtd PREFIX "Header Files" FILES ${REVERIE_FDTD_H})

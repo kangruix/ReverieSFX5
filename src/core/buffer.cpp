@@ -1,6 +1,7 @@
 #include "reverie/core/buffer.h"
 #include "reverie/core/vector.h"
 #include "reverie/core/backend/memory.h"
+#include <sstream>
 
 namespace reverie {
 
@@ -75,17 +76,20 @@ const T* Buffer<T>::view() const {
 		return m_host_data;
 	}
 #endif
+    return nullptr;
 }
 
 template <typename T>
 void Buffer<T>::allocate() {
-	if (m_size > 0) cudaCheck(cudaMalloc((void**) &m_data, m_size * sizeof(T)));
-	
-	if (m_device.type == DeviceType::CPU) {
+	if (m_size == 0) return;
+
+    if (m_device.type == DeviceType::CPU) {
+        m_data = new T[m_size];
 		m_host_data = m_data;
 	}
 #ifdef REV_ENABLE_CUDA
 	else if (m_device.type == DeviceType::CUDA) {
+        cudaCheck(cudaMalloc((void**) &m_data, m_size * sizeof(T)));
 		m_host_data = new T[m_size];
 	}
 #endif
@@ -93,14 +97,19 @@ void Buffer<T>::allocate() {
 
 template <typename T>
 void Buffer<T>::deallocate() {
-	if (m_size > 0) cudaCheck(cudaFree(m_data));
+    if (m_size == 0) return;
 
+    if (m_device.type == DeviceType::CPU) {
+        delete[] m_data;
+    }
 #ifdef REV_ENABLE_CUDA
-	if (m_device.type == DeviceType::CUDA && m_host_data) {
+	else if (m_device.type == DeviceType::CUDA) {
+        cudaCheck(cudaFree(m_data));
 		delete[] m_host_data;
-		m_host_data = nullptr;
 	}
 #endif
+    m_data = nullptr;
+    m_host_data = nullptr;
 }
 
 template <typename T>
@@ -119,6 +128,14 @@ void Buffer<T>::copy_from(const T* src_ptr, DeviceType src_dev) {
 		cudaCheck(cudaMemcpy(m_data, src_ptr, m_size * sizeof(T), HostToDevice));
 	}
 #endif
+}
+
+template <typename T>
+std::string Buffer<T>::to_string(bool device) const {
+	double mem = m_size * sizeof(T) / (1024. * 1024.);
+	std::stringstream ss;
+	ss << "[" << mem << " MB " << (device ? m_device.to_string() : "") << "]";
+	return ss.str();
 }
 
 template class Buffer<int>;

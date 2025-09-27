@@ -4,8 +4,9 @@
 namespace reverie {
 namespace geometry {
 
-VoxelGrid::VoxelGrid(point3i vmin, point3i vmax, vec3f vsize) 
-	: dims(vmax.x - vmin.x, vmax.y - vmin.y, vmax.z - vmin.z), vsize(vsize),
+VoxelGrid::VoxelGrid(point3i vmin, point3i vmax, vec3f vsize, Device device)
+	: ReverieBase(device), 
+	  dims(vmax.x - vmin.x, vmax.y - vmin.y, vmax.z - vmin.z), vsize(vsize),
 	  origin(vmin.x * vsize.x, vmin.y * vsize.y, vmin.z * vsize.z) {
 }
 

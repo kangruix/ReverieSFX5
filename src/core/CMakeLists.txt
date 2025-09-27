@@ -25,8 +25,7 @@ if (CMAKE_CUDA_COMPILER)
 endif()
 
 # Create library
-add_library(reverie_core STATIC 
-    ${REVERIE_CORE_C} ${REVERIE_CORE_H})
+add_library(reverie_core STATIC ${REVERIE_CORE_C} ${REVERIE_CORE_H})
 
 # Dependencies
 target_include_directories(reverie_core
@@ -47,15 +46,14 @@ if (CMAKE_CUDA_COMPILER)
 endif()
 
 # Python bindings
-file(GLOB REVERIE_CORE_PY 
-    ${CMAKE_CURRENT_SOURCE_DIR}/python/*.cpp)
+file(GLOB REVERIE_CORE_PY ${CMAKE_CURRENT_SOURCE_DIR}/python/*.cpp)
 
-nanobind_add_module(pyreverie_core STABLE_ABI ${REVERIE_CORE_PY})
-set_target_properties(pyreverie_core PROPERTIES OUTPUT_NAME "core")
-target_link_libraries(pyreverie_core PRIVATE reverie_core)
+nanobind_add_module(revpy_core STABLE_ABI ${REVERIE_CORE_PY})
+set_target_properties(revpy_core PROPERTIES OUTPUT_NAME "core")
+target_link_libraries(revpy_core PRIVATE reverie_core)
 
 # Install directive for scikit-build-core
-install(TARGETS pyreverie_core LIBRARY DESTINATION reverie/core)
+install(TARGETS revpy_core LIBRARY DESTINATION reverie/core)
 
 # Organize files in Visual Studio
 source_group(TREE ${CMAKE_SOURCE_DIR}/include/reverie/core PREFIX "Header Files" FILES ${REVERIE_CORE_H})

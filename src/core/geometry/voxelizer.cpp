@@ -20,18 +20,16 @@ void Voxelizer::clear() {
 void Voxelizer::log(const std::filesystem::path& logfile) const {
 	std::ofstream fout(logfile, std::ofstream::binary);
 
-	/*std::vector<int> h_bitmask(m_num_voxels / 32);
-	revMemcpy(h_bitmask.data(), d_bitmask, h_bitmask.size() * sizeof(int), DeviceToHost);
-
-	for (int idx = 0; idx < m_num_voxels; ++idx) {
+	const int* bitmask = m_bitmask.view();
+	for (int idx = 0; idx < m_grid->num_voxels(); ++idx) {
 		int bit = 31 - (idx % 32);
 		int mask = 1 << bit;
 
-		if (h_bitmask[idx / 32] & mask) {
+		if (bitmask[idx / 32] & mask) {
 			point3f P = m_grid->pos(idx);
-			fout.write((char*) &P, sizeof(point3f));
+			fout.write(reinterpret_cast<const char*>(&P), sizeof(point3f));
 		}
-	}*/
+	}
 }
 
 #ifndef REV_ENABLE_CUDA

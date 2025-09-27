@@ -27,6 +27,8 @@ __global__ void compute_bbox_cu(
 
 template<> BBox3f compute_bbox<DeviceType::CUDA>(
     const Buffer<point3f>& points) {
+    assert(points.device().type == DeviceType::CUDA);
+    
     int blockDim = 256;
     int gridDim = 1;
 	int sharedMem = blockDim * sizeof(BBox3f);

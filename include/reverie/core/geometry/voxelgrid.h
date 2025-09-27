@@ -14,7 +14,8 @@ public:
 	const point3f origin;	///< min corner (world-space)
 
 	/// Constructor: initialize from global voxel-space coordinates
-	VoxelGrid(point3i vmin, point3i vmax, vec3f vsize);
+	VoxelGrid(point3i vmin, point3i vmax, vec3f vsize, 
+		Device device = Device());
 
 	/// Destructor
 	~VoxelGrid() = default;

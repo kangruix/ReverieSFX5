@@ -1,0 +1,21 @@
+PROJECT_NAME      = Reverie
+OUTPUT_DIRECTORY  = _build/doxygen
+EXTENSION_MAPPING = cu=c++
+EXTRACT_STATIC    = YES
+INPUT             = ../include/reverie \
+                    ../include/reverie/core \
+                    ../include/reverie/core/backend \
+                    ../include/reverie/core/geometry \
+                    ../include/reverie/core/signal \
+                    ../include/reverie/fdtd \
+                    ../include/reverie/rigid \
+                    ../include/reverie/fluid \
+                    ../include/reverie/render \
+                    ../include/reverie/gui
+FILE_PATTERNS     = *.h \
+                    *.cpp \
+                    *.cu
+USE_MATHJAX       = YES
+GENERATE_XML      = NO
+GENERATE_HTML     = YES
+GENERATE_LATEX    = NO

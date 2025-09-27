@@ -246,21 +246,21 @@ template <DeviceType D>
 bool Voxelizer::voxelize_surface(const Mesh& mesh) {
 	assert(mesh.device().type == D);
 
-	/*int* d_counter = nullptr;
+	int* d_counter = nullptr;
 	revMalloc((void**) &d_counter, sizeof(int));
 	revMemset(d_counter, 0, sizeof(int));
 
-	int blockDim = 256;  // \todo
+	int blockDim = 256;
 	int gridDim = ((mesh.num_faces() + blockDim - 1) / blockDim);
 
 	REV_LAUNCH_KERNEL(voxelize_surface, gridDim, blockDim,
-		d_bitmask, m_grid->dims, m_grid->vsize, m_grid->origin,
+		m_bitmask.data(), m_grid->dims, m_grid->vsize, m_grid->origin,
 		mesh.vertices(), mesh.faces(), mesh.num_faces(),
 		d_counter);
 
 	int count = 0;
 	revMemcpy(&count, d_counter, sizeof(int), DeviceToHost);
-	revFree(d_counter);*/
+	revFree(d_counter);
 
 	return true;
 }
@@ -269,13 +269,13 @@ template <DeviceType D>
 bool Voxelizer::voxelize_solid(const Mesh& mesh) {
 	assert(mesh.device().type == D);
 
-	/*int blockDim = 256; // \todo
+	int blockDim = 256; // \todo
 	int gridDim = ((mesh.num_faces() + blockDim - 1) / blockDim);
 
 	REV_LAUNCH_KERNEL(voxelize_solid, gridDim, blockDim,
-		d_bitmask, m_grid->dims, static_cast<vec3d>(m_grid->vsize), m_grid->origin,
+		m_bitmask.data(), m_grid->dims, static_cast<vec3d>(m_grid->vsize), m_grid->origin,
 		mesh.vertices(), mesh.faces(), mesh.num_faces(),
-		std::ceil((mesh.bbox().max.x - m_grid->origin.x) / m_grid->vsize.x));*/
+		std::ceil((mesh.bbox().max.x - m_grid->origin.x) / m_grid->vsize.x));
 
 	return true;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "reverie/core/backend/memory.h"
+#include <cassert>
 #ifdef REV_ENABLE_CUDA
 #include <device_launch_parameters.h>
 #endif

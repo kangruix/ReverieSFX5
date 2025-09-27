@@ -57,6 +57,7 @@ using BBox3f = BBox<float>;
 template <DeviceType D>
 BBox3f compute_bbox(const Buffer<point3f>& points);
 
+BBox3f compute_bbox(const Buffer<point3f>& points);
 
 template<> REV_HOST_DEVICE constexpr BBox<float>::BBox()
     : min(3.402823466e+38F), max(-3.402823466e+38F) {}

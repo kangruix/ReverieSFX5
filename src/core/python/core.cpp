@@ -1,7 +1,15 @@
 #include <nanobind/nanobind.h>
+#include "reverie/core/base.h"
 
-int add(int a, int b) { return a + b; }
+namespace nb = nanobind;
+using namespace reverie;
 
 NB_MODULE(core, m) {
-    m.def("add", &add);
+    nb::intrusive_init(
+        [](PyObject* o) noexcept { nb::gil_scoped_acquire guard; Py_INCREF(o); },
+        [](PyObject* o) noexcept { nb::gil_scoped_acquire guard; Py_DECREF(o); });
+
+    nb::class_<ReverieBase>(m, "ReverieBase",
+        nb::intrusive_ptr<ReverieBase>(
+            [](ReverieBase* rb, PyObject* po) noexcept { rb->set_self_py(po); }));
 }
