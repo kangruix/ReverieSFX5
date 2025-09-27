@@ -13,6 +13,7 @@ file(GLOB REVERIE_CORE_H
 file(GLOB REVERIE_CORE_C
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/geometry/*.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/geometry/*.inl
 	${CMAKE_CURRENT_SOURCE_DIR}/signal/*.cpp)
 
 # CUDA files

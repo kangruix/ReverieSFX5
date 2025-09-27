@@ -26,20 +26,20 @@ __global__ void compute_bbox_cu(
 }
 
 template<> BBox3f compute_bbox<DeviceType::CUDA>(
-    const point3f* d_points, int num_points) {
+    const Buffer<point3f>& points) {
     int blockDim = 256;
     int gridDim = 1;
 	int sharedMem = blockDim * sizeof(BBox3f);
 
     BBox3f* d_bbox;
-    revMalloc((void**) &d_bbox, sizeof(BBox3f));
+    cudaCheck(cudaMalloc((void**) &d_bbox, sizeof(BBox3f)));
 
     compute_bbox_cu<<<gridDim, blockDim, sharedMem>>>(
-        d_points, num_points, d_bbox);
+        points.data(), points.size(), d_bbox);
 
     BBox3f h_bbox;
-    revMemcpy(&h_bbox, d_bbox, sizeof(BBox3f), DeviceToHost);
-    revFree(d_bbox);
+    cudaCheck(cudaMemcpy(&h_bbox, d_bbox, sizeof(BBox3f), DeviceToHost));
+    cudaCheck(cudaFree(d_bbox));
 
     return h_bbox;
 }

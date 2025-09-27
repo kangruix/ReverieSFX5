@@ -13,7 +13,10 @@ public:
 
 	const point3f origin;	///< min corner (world-space)
 
+	/// Constructor: initialize from global voxel-space coordinates
 	VoxelGrid(point3i vmin, point3i vmax, vec3f vsize);
+
+	/// Destructor
 	~VoxelGrid() = default;
 
 	uint32_t num_voxels() const { return dims.x * dims.y * dims.z; }
@@ -26,9 +29,6 @@ private:
 	const BBox3f m_bbox;
 
 public:
-	struct View { dim3 dims; vec3f vsize; point3f origin; };
-	View view() { return { dims, vsize, origin }; }
-
 	/// Converts flattened index \c idx to (i, j, k) indices
 	vec3i ijk(uint32_t idx) const {
 		int i = idx % dims.x;

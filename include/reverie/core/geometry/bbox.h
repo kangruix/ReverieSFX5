@@ -1,6 +1,6 @@
 #pragma once
-#include "reverie/core/device.h"
 #include "reverie/core/vector.h"
+#include "reverie/core/buffer.h"
 
 namespace reverie {
 namespace geometry {
@@ -54,13 +54,8 @@ struct BBox {
 
 using BBox3f = BBox<float>;
 
-/**
- * \brief
- * \param[in]  d_points
- * \param[in]  num_points
- */
 template <DeviceType D>
-BBox3f compute_bbox(const point3f* d_points, int num_points);
+BBox3f compute_bbox(const Buffer<point3f>& points);
 
 
 template<> REV_HOST_DEVICE constexpr BBox<float>::BBox()

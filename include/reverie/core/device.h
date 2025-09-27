@@ -17,7 +17,7 @@ constexpr DeviceType Default = DeviceType::CPU;
 #endif
 
 struct Device {
-    const DeviceType type = Default;
+    DeviceType type = Default;
     //int index = 0;
 
     std::string to_string() const;

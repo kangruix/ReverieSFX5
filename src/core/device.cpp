@@ -4,8 +4,8 @@ namespace reverie {
 
 std::string Device::to_string() const {
 	switch (type) {
-	case DeviceType::CPU: return "cpu";
-	case DeviceType::CUDA: return "cuda";
+	case DeviceType::CPU: return "CPU";
+	case DeviceType::CUDA: return "CUDA";
 	default: return "";
 	}
 }

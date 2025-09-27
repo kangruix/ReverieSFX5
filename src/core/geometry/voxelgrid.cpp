@@ -15,7 +15,8 @@ std::string VoxelGrid::to_string() const {
 		"  dims = [" << std::to_string(dims.x) << ", " << 
 			std::to_string(dims.y) << ", " << 
 			std::to_string(dims.z) << "]\n" <<
-		"]\n";
+		"  device = " << m_device.to_string() << "\n" <<
+		"]";
 	return ss.str();
 }
 

@@ -6,6 +6,22 @@
 #include <stdexcept>
 #endif
 
+/**
+ * Low-level memory management API
+ * 
+ * The behaviors of revMalloc, revMemcpy, revMemset, and revFree depend
+ * on the translation unit they are invoked from.
+ * 
+ * If invoked from a .cu file (i.e., compiled with nvcc), these functions
+ * manage memory on the GPU using CUDA APIs.
+ * 
+ * If invoked from a regular .cpp file, these functions revert to
+ * standard C/C++ CPU memory management (malloc, memcpy, etc.).
+ * 
+ * Along with the other backend components, this allows for writing 
+ * device-agnostic code that compiles to both valid C++ and CUDA kernels.
+ */
+
 namespace reverie {
 
 /// CUDA error checking helper
@@ -28,7 +44,7 @@ enum revMemcpyKind { HostToDevice, DeviceToHost, DeviceToDevice };
 
 /// Allocates memory on device
 static inline void revMalloc(void** ptr, size_t size) {
-#ifdef REV_ENABLE_CUDA
+#ifdef __CUDACC__
     cudaCheck(cudaMalloc(ptr, size));
 #else
 	*ptr = std::malloc(size);
@@ -38,7 +54,7 @@ static inline void revMalloc(void** ptr, size_t size) {
 /// Copies data between host and device
 static inline void revMemcpy(void* dst, const void* src, size_t size,
     revMemcpyKind kind) {
-#ifdef REV_ENABLE_CUDA
+#ifdef __CUDACC__
     cudaCheck(cudaMemcpy(dst, src, size, kind));
 #else
     std::memcpy(dst, src, size);
@@ -47,7 +63,7 @@ static inline void revMemcpy(void* dst, const void* src, size_t size,
 
 /// Initializes or sets memory to \c value
 static inline void revMemset(void* ptr, int value, size_t size) {
-#ifdef REV_ENABLE_CUDA
+#ifdef __CUDACC__
     cudaCheck(cudaMemset(ptr, value, size));
 #else
 	std::memset(ptr, value, size);
@@ -56,7 +72,7 @@ static inline void revMemset(void* ptr, int value, size_t size) {
 
 /// Frees memory
 static inline void revFree(void* ptr) {
-#ifdef REV_ENABLE_CUDA
+#ifdef __CUDACC__
     cudaCheck(cudaFree(ptr));
 #else
 	std::free(ptr);

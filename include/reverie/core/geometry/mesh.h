@@ -1,13 +1,21 @@
 #pragma once
 #include "reverie/core/base.h"
 #include "reverie/core/geometry/bbox.h"
+#include <filesystem>
 
 namespace reverie {
 namespace geometry {
 
 class Mesh : public ReverieBase {
 public:
+	/// Default constructor: initialize empty Mesh
 	Mesh() = default;
+
+	/// Writes this Mesh to an .obj file
+	void write(const std::filesystem::path& objfile) const;
+
+	const point3f* vertices() const { return m_vertices.data(); }
+	const vec3i* faces() const { return m_faces.data(); }
 
 	size_t num_vertices() const { return m_vertices.size(); }
 	size_t num_faces() const { return m_faces.size(); }
@@ -19,20 +27,8 @@ public:
 private:
 	Buffer<point3f> m_vertices;
 	Buffer<vec3i> m_faces;
-	Device m_device;
 
 	BBox3f m_bbox;
-
-public:
-	struct View {
-		const point3f* d_vertices; const vec3i* d_faces;
-		int num_vertices; int num_faces;
-	};
-
-	View view() const {
-		return { m_vertices.get(), m_faces.get(),
-			(int) m_vertices.size(), (int) m_faces.size() };
-	}
 };
 
 } // namespace geometry
