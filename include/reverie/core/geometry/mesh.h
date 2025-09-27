@@ -25,7 +25,7 @@ public:
 
 	BBox3f bbox() const { return m_bbox; }
 
-	std::string to_string() const;
+	std::string to_string() const override;
 
 private:
 	Buffer<point3f> m_vertices;

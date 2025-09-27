@@ -22,7 +22,7 @@ public:
     size_t num_samples() const { return m_samples.size() / m_num_channels; }
     uint16_t num_channels() const { return m_num_channels; }
 
-    std::string to_string() const;
+    std::string to_string() const override;
 
 private:
     Buffer<float> m_samples;

@@ -1,6 +1,6 @@
 #pragma once
 #include "reverie/core/geometry/mesh.h"
-#include <map>
+#include "reverie/core/geometry/transform.h"
 
 namespace reverie {
 namespace geometry {
@@ -17,7 +17,7 @@ public:
     bool update_animation(double time);
 
     /// \returns true if this Object is also a Source
-    bool is_source() const { return m_source; }
+    //bool is_source() const { return m_source; }
 
     const uint8_t id;   ///< unique id (1-indexed)
 
@@ -27,8 +27,7 @@ public:
     const BBox3f& bbox() const { return m_mesh.bbox(); }
 	const Transform3f& transform() const { return m_transform; }
 
-    /// RGB color for debugging (default: gray)
-    point3f color = { 0.8, 0.8, 0.8 };
+    std::string to_string() const override;
 
 private:
     std::string m_name;
@@ -37,7 +36,7 @@ private:
 	Transform3f m_transform;
 
     ref<Animation> m_animation;
-    ref<Source> m_source;
+    //ref<signal::Source> m_source;
 
     static uint8_t s_global_id;
 };

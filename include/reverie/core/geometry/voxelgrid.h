@@ -24,7 +24,7 @@ public:
 
 	const BBox3f& bbox() const { return m_bbox; }
 
-	std::string to_string() const;
+	std::string to_string() const override;
 
 private:
 	const BBox3f m_bbox;

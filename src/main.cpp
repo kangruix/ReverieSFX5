@@ -1,4 +1,4 @@
-#include "reverie/core/geometry/voxelizer.h"
+#include "reverie/fdtd/grid.h"
 #include <iostream>
 
 int main() {

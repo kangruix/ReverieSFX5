@@ -138,6 +138,7 @@ std::string Buffer<T>::to_string(bool device) const {
 	return ss.str();
 }
 
+template class Buffer<uint8_t>;
 template class Buffer<int>;
 template class Buffer<float>;
 
